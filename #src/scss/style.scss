@@ -1,0 +1,174 @@
+@mixin font($font_name, $file_name, $weight, $style) {
+
+	@font-face {
+		font-family: $font_name;
+		font-display: swap;
+		src: url("../fonts/#{$file_name}.woff") format("woff"), url("../fonts/#{$file_name}.woff2") format("woff2");
+		font-weight: #{$weight};
+	font-style: #{$style};
+	}
+}
+
+@import "fonts";
+
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+ }
+
+*, *:before, *:after {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+:focus, :active {
+	outline: none;
+}
+
+a:focus, a:active {
+	outline: none;
+}
+
+nav, footer, header, aside {
+	display: block;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	font-size: 100%;
+	line-height: 1;
+	font-size: 14px;
+	-ms-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+
+input, button, textarea {
+	font-family: inherit;
+}
+
+input::-ms-clear {
+	display: none;
+}
+
+button {
+	cursor: pointer;
+}
+
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+a, a:visited {
+	text-decoration: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: inherit;
+	font-weight: 400;
+}
+
+html, body {
+	--main-font-family: Montserrat, sans-serif;
+	--secondary-font-family: Roboto, Arial;
+}
+
+
+.row {
+	width: 100%;
+}
+
+.wrapper {
+	margin: 0;
+	padding: 20px 20px;
+}
+
+.btn {
+	display: block;
+	padding: 10px 20px;
+	cursor: pointer;
+	letter-spacing: .1em;
+	color: #fff;
+	background-color: green;
+	border: none;
+	border-radius: 5px;
+	font-family: var(--main-font-family);
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.hero {
+	background-image: url(../img/parta-almaty-001.jpg);
+	background-position: center;
+	background-size: cover;
+	height: 100vh;
+	position: relative;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #000;
+		opacity: .7;
+		z-index: 200;
+	}
+	&_content {
+		color: #fff;
+		z-index: 300;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--main-font-family);
+		&__heading {
+			font-size: 2.8rem;
+			margin-bottom: 30px;
+			font-weight: bold;
+			line-height: 1.3em;
+		}
+		&__subheading {
+			font-size: 2rem;
+			margin-bottom: 30px;
+			line-height: 1.3em;
+		}
+		&__description {
+			font-size: 1.6rem;
+			line-height: 1.5em;
+			max-width: 500px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 30px;
+			&::before {
+				content: "";
+				display: block;
+				width: 200px;	
+				border-top: 1px solid #fff;
+				margin-bottom: 30px;
+				height: 1px;
+			}
+		}
+		b {
+			font-weight: bold;
+			display: contents;
+		}
+	}
+	
+}
+
+@import "modal";
