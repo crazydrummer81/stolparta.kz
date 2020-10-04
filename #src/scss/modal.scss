@@ -11,6 +11,7 @@
 
 	&__wrapper {
 		position: relative;
+		overflow-y: scroll;
 		min-width: 300px;
 		max-width: 400px;
 		width: 95%;
@@ -22,6 +23,7 @@
 		justify-content: center;
 		text-align: center;
 		border-radius: 5px;
+		&::-webkit-scrollbar { width: 0; }
 	}
 	&__button-close {
 		position: absolute;
@@ -45,8 +47,23 @@
 	&__content {
 		font-size: 1.5rem;
 		padding: 0 20px;
+		position: relative;
 		> * {
 			margin-bottom: 20px;
+		}
+		.preloader {
+			background-image: url(../img/preloader.gif);
+			background-position: center;
+			background-repeat: no-repeat;
+			position: absolute;
+			top: 0; bottom: 0; left: 0; right: 0;
+			z-index: 500;
+			background-color: #fff;
+			opacity: .7;
+			display: none;
+		}
+		.preloader.active {
+			display: block;
 		}
 	}
 	&__footer {
@@ -74,12 +91,20 @@
 		> * {
 			margin-bottom: 20px;
 		}
-		>input[type=text] {
+		> :last-child {
+			margin-bottom: 0;
+		}
+		>input[type=text],
+		>input[type=tel] {
 			padding: 10px;
 			width: 100%;
 			border: 1px solid #999;
 			border-radius: 5px;
 			font-size: 18px;
+		}
+		input[type=checkbox] {
+			width: 25px;
+			height: 25px;
 		}
 		input[type=submit] {
 			align-self: center;
@@ -89,18 +114,19 @@
 			font-size: 20px;
 			font-weight: bold;
 		}
-		&__table {
+		&__table, .shipping_wrapper {
 			text-align: left;
 			width: 100%;
 			table-layout: fixed;
+			margin-bottom: 5px;
 			> * {
 				margin-bottom: 15px;
 			}
 		}
-		&__table_row {
+		&__table_row, .shipping_wrapper tr {
 			label {
 			}
-			td { padding: 5px 0; }
+			td { padding: 3px 0; }
 			td:nth-child(1) {
 				width: 33%;
 			}
@@ -111,7 +137,7 @@
 			}
 			td:nth-child(3) {
 				width: 33%;
-				.price { display: inline; }
+				.price { display: inline; font-size: 1.25rem;}
 			}
 			input[type=text] {
 				width: 2em;
@@ -156,6 +182,5 @@
 	}
 	.success {
 		color: green;
-		font-weight: bold;
 	}
 }

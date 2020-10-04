@@ -21,7 +21,8 @@ testWebP(function (support) {
 const prices = {
 	table: 23000,
 	chair: 17000,
-	lamp: 5000
+	lamp: 5000,
+	shipping: 1000
 }
 
 //Оьъект - форма обратной связи
@@ -31,10 +32,10 @@ const modalCallbackForm = {
 			<div class="modal__wrapper">
 				<div class="modal__header">Оформление заказа</div>
 					<div class="modal__content">
-						<p>Оставьте ваши контакты ниже, и мы обязательно свяжемся с вами</p>
+						<p>Пожалуйста, заполните все поля, и мы обязательно свяжемся с вами</p>
 						<form id="form_callback" class="form_callback">
 							<input type="text" name="user_name" placeholder="Ваше имя">
-							<input type="text" name="user_phone" placeholder="Ваш телефон" required>
+							<input type="tel" name="user_phone" placeholder="Ваш телефон" required>
 							<p>Выберите комплетацию:</p>
 							<table class="form_callback__table">
 								<tr class="form_callback__table_row">
@@ -80,6 +81,18 @@ const modalCallbackForm = {
 									</td>
 								</tr>
 							</table>
+							<table class="shipping_wrapper"><tr>
+								<td>
+									<label for="need_shipping">Доставка</label>
+								</td>
+								<td>
+									<input type="checkbox" name="need_shipping" id="need_shipping">
+									<input type="hidden" name="shipping_cost" id="shipping_cost" value=0>
+								</td>
+								<td>
+									= <div class="price"><span class="price_value" data-of="chair">0</span> ₸</div>
+								</td></tr>
+							</table>
 							<div class="gift"></div>
 							<div class="benefit"></div>
 							<div class="price_total">Итого: <span class="price_value">0</span> ₸
@@ -90,17 +103,23 @@ const modalCallbackForm = {
 						</form>
 						<div class="modal__footer">
 					</div>
+					<div class="preloader"></div>
 				</div>
 				<button class="modal__button-close">&#10006;</button>
 			</div>
 		</div>`,
 	successHTML: `<div class="success">Спасибо! Мы с вами свяжемся в самое ближайшее время.</div>`,
+	preloaderToggle: function() {
+		const loadingBlock = document.querySelector('.modal__content .preloader');
+		loadingBlock.classList.toggle('active');
+	},
 	init: function () {
 		document.body.insertAdjacentHTML('beforeEnd', this.html);
 		const formCallback = document.querySelector('form#form_callback');
 		formCallback.onsubmit = async (e) => {
 			e.preventDefault();
 			//! Пересчет сумм на случай умельца, который подменит значения сумм в скрытых инпутах
+			this.preloaderToggle();
 			this.calculate();
 
 			let response = await fetch('/admin/order.php', {
@@ -111,6 +130,7 @@ const modalCallbackForm = {
 			console.dir(result);
 			if(result) {
 				this.submitted();
+				this.preloaderToggle();
 			}
 		};
 	},
@@ -156,6 +176,13 @@ const modalCallbackForm = {
 						view:  table.querySelector('input[name=quantity_chair]').parentElement.parentElement
 						.querySelector('.price_value')
 					},
+					shipping: {
+						fields: {
+							checkbox: form.querySelector('input[name=need_shipping]'),
+							cost: form.querySelector('input[name=shipping_cost]')
+						},
+						view: form.querySelector('.shipping_wrapper .price_value')
+					},					
 					total: {
 						fields: {
 							cost: form.querySelector('input[name=cost_total]')
@@ -166,9 +193,14 @@ const modalCallbackForm = {
 		for(let prod in nodes) {
 			if (prod == 'total') {
 				nodes.total.fields.cost.value = 
-					+nodes.table.fields.cost.value + +nodes.lamp.fields.cost.value + +nodes.chair.fields.cost.value;
+					+nodes.table.fields.cost.value + +nodes.lamp.fields.cost.value + +nodes.chair.fields.cost.value + +nodes.shipping.fields.cost.value;
 				nodes.total.view.textContent = +nodes.total.fields.cost.value;
-			} else {
+			} else if (prod == 'shipping') {
+				let shippingCost = nodes.shipping.fields.checkbox.checked ? prices.shipping : 0;
+				nodes.shipping.fields.cost.value = shippingCost;
+				nodes.shipping.view.textContent = shippingCost;
+			} 
+			else {
 				nodes[prod].fields.cost.value = +nodes[prod].fields.quantity.value * +prices[prod];
 				nodes[prod].view.textContent = +nodes[prod].fields.cost.value;
 			}
@@ -184,6 +216,10 @@ const modalCallbackForm = {
 		let discountedPrice = +nodes.total.fields.cost.value - prices.lamp * Math.min(giftLamps, nodes.lamp.fields.quantity.value);
 		if(discountedPrice < 0) { discountedPrice = 0; }
 
+		let totalPriceLamp = prices.lamp * (nodes.lamp.fields.quantity.value - giftLamps);
+		if (totalPriceLamp < 0) { totalPriceLamp = 0; }
+		nodes.lamp.fields.cost.value = totalPriceLamp;
+		nodes.lamp.view.textContent = totalPriceLamp;
 		nodes.total.fields.cost.value = +discountedPrice;
 		nodes.total.view.textContent = +discountedPrice;
 
@@ -204,7 +240,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const btn = document.querySelector('.btn'),
 		modal = document.querySelector('.modal'),
 		table = modal.querySelector('table'),
-		btnClose = modal.querySelector('.modal__button-close');
+		btnClose = modal.querySelector('.modal__button-close'),
+		shippingCheckbox = modal.querySelector('input[name=need_shipping]');
 	btn.addEventListener('click', (event) => {
 		modalCallbackForm.show();
 	});
@@ -219,8 +256,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		inputQuantity.value = +inputQuantity.value + +event.target.dataset.change;
 		if (+inputQuantity.value < 0) { inputQuantity.value = 0; }
 		// inputQuantity.parentElement.querySelector('input[type=hidden]').value = +price.textContent;
-		modalCallbackForm.calculate(event.target);
-
+		modalCallbackForm.calculate();
+	});
+	shippingCheckbox.addEventListener('change', (event) => {
+		modalCallbackForm.calculate();
 	});
 
 });
