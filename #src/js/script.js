@@ -112,8 +112,10 @@ const modalCallbackForm = {
 	successHTML: `<div class="success">Спасибо! Мы с вами свяжемся в самое ближайшее время.</div>`,
 	preloaderToggle: function() {
 		const loadingBlock = document.querySelector('.modal__content .preloader');
-		loadingBlock.classList.toggle('active');
+		if (loadingBlock) {loadingBlock.classList.toggle('active');}
 	},
+	arFormData: {},
+	pixelData: {},
 	init: function () {
 		document.body.insertAdjacentHTML('beforeEnd', this.html);
 		const formCallback = document.querySelector('form#form_callback');
@@ -122,7 +124,23 @@ const modalCallbackForm = {
 			//! Пересчет сумм на случай умельца, который подменит значения сумм в скрытых инпутах
 			this.preloaderToggle();
 			this.calculate();
-
+			this.formData = new FormData(formCallback);
+			this.arFormData = {};
+			for(let item of this.formData.entries()) {
+				this.arFormData[item[0]] = item[1];
+			}
+			// console.log(this.arFormData);
+			this.pixelData = {
+				currency: 'KZT',
+				value: +this.arFormData.cost_total,
+				content_type: 'product',
+				contents: [{'id': 'stol', 'quantity': +this.arFormData.quantity_table},
+				           {'id': 'stul', 'quantity': +this.arFormData.quantity_chair},
+				           {'id': 'lampa', 'quantity': +this.arFormData.quantity_lamp},
+				           {'id': 'dostavka', 'quantity': this.arFormData.need_shipping == 'on' ? 1 : 0}]
+			};
+			console.log(this.pixelData);
+			fbq('track', 'Purchase', this.pixelData);
 			let response = await fetch('/admin/order.php', {
 			method: 'POST',
 			body: new FormData(formCallback)
@@ -273,6 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (item.attributes.href.value == '#link:whatsapp') { 
 			item.addEventListener('click', (e) => {
 				e.preventDefault();
+				fbq('track', 'Contact', {contact_type: 'WhatsApp'});
 				window.open(
 					'https://api.whatsapp.com/send/?phone=77017112621&text=Здравствуйте!%0A',
 					'_blank'
@@ -282,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (item.attributes.href.value == '#link:phone') { 
 			item.addEventListener('click', (e) => {
 				e.preventDefault();
+				fbq('track', 'Contact', {contact_type: 'Phone'});
 				window.open('tel:+77017280059');
 			});
 		}
