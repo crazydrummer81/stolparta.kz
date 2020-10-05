@@ -55,6 +55,9 @@ input::-ms-clear {
 
 button {
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 button::-moz-focus-inner {
@@ -78,8 +81,10 @@ h1, h2, h3, h4, h5, h6 {
 html, body {
 	--main-font-family: Montserrat, sans-serif;
 	--secondary-font-family: Roboto, Arial;
+	font-family: var(--main-font-family);
 }
 
+body.blocked { overflow: hidden; }
 
 .row {
 	width: 100%;
@@ -91,8 +96,10 @@ html, body {
 }
 
 .btn {
-	display: block;
-	padding: 10px 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 15px 20px;
 	cursor: pointer;
 	letter-spacing: .1em;
 	color: #fff;
@@ -102,6 +109,9 @@ html, body {
 	font-family: var(--main-font-family);
 	font-size: 1.5rem;
 	font-weight: bold;
+	@media (max-width: 768px) {
+		align-self: center;
+	}
 }
 
 .hero {
@@ -141,11 +151,14 @@ html, body {
 			line-height: 1.3em;
 		}
 		&__subheading {
+			font-family: var(--main-font-family);
+			// font-family: serif;
 			font-size: 2rem;
 			margin-bottom: 30px;
 			line-height: 1.3em;
 		}
 		&__description {
+			font-family: var(--main-font-family);
 			font-size: 1.6rem;
 			line-height: 1.5em;
 			max-width: 500px;
@@ -170,5 +183,164 @@ html, body {
 	}
 	
 }
+.container { 
+	max-width: 968px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	text-align: center;
+	padding: 0 20px;
+	margin: 0 auto;
+	align-self: center;
+	justify-self: center;
+}
+.section {
+	height: 100vh;
+	padding-top: 20px; padding-bottom: 20px;
+	&:nth-child(even) { background: #F0F0F0; }
+	@media (max-width: 768px) {
+		height: auto;
+	}
+	&.height100vh {
+		@media (max-width: 768px) {
+		height: 100vh;
+		} 
+	}
 
+	&__title {
+		font-size: 3.5rem;
+		margin-bottom: 20px;
+		line-height: 1.2em;
+		font-weight: bold;
+		&.smaller { 
+			font-size: 2.5rem; 
+			@media (max-width: 768px) {
+				font-size: 1.5rem;
+			}
+		}
+		@media (max-width: 768px) {
+			font-size: 2rem;
+		}
+	}
+	&__subtitle {
+		font-family: var(--secondary-font-family);;
+		font-size: 1.7rem;
+		line-height: 1.5em;
+		margin-bottom: 15px;
+		@media (max-width: 768px) {
+			font-size: 1.3rem;
+		}
+	}
+}
+
+.features-wrap {
+	max-width: 700px;
+}
+.features {
+	counter-reset: features;
+	display: flex; flex-direction: column; align-items: flex-start; justify-content: start;
+	text-align: left;
+	&__row {
+		display: flex; flex-direction: column; align-items: flex-start; justify-content: start;
+		position: relative;
+		margin-left: 70px;
+
+		&::before {
+			position: absolute; left: -70px;
+			display: flex; align-items: center;justify-content: center; flex-direction: row;
+			font-size: 25px; font-weight: bold;
+			width: 50px; height: 50px;
+			border:	2px solid #1f5bff;
+			border-radius: 150px;
+			color: #1f5bff;
+			counter-increment: features;
+			content: counter(features);
+		}
+		&.check::before { content: url(../img/check.svg); border: none; left: -95px; }	
+	}
+}
+.feature-heading {
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
+.feature-text {
+	font-family: Roboto;
+	line-height: 1.25em;
+	font-size: 1.2rem;
+	margin-bottom: 35px;
+	@media (max-width: 768px) {
+		margin-bottom: 20px;
+	}
+	&:last-child() { margin-bottom: 0; }
+}
+
+.wa-widget {
+	position: fixed;
+	bottom:20px; right: 20px;
+	background-color: green;
+	width: 65px; height: 65px;
+	display: flex; align-items: center; justify-content: center;
+	border-radius: 100%;
+	box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+	svg {
+		width: 40px;
+		fill: #fff;
+	}
+}
+.tips__gallery {
+	width: 100%;
+	display: grid; grid-template-columns: repeat(3, 1fr);
+	align-content: center; align-items: center;
+	grid-template-rows: 320px;
+	overflow: hidden;
+	grid-gap: 20px;
+	img { max-width: 100%; height: 400px; }
+	@media (max-width:768px) {
+		grid-template-columns: 1fr;
+	}
+}
+.footer {
+	background: #242424;
+	height: 50vh;
+	color: #fff;
+	display: flex; flex-direction: column; align-items: center;justify-content: space-evenly;
+	// .footer__heading
+
+	&__heading {
+		font-weight: bold;
+		font-size: 22px;
+	}
+
+	// .footer__phone
+
+	&__phone {
+		font-size: 30px;
+		a, a:visited { color: #fff; }
+	}
+
+	// .footer__subheading
+
+	&__subheading {
+		font-size: 26px;
+		text-transform: uppercase;
+	}
+
+	// .footer__social-icons
+
+	&__social-icons {
+		background: #fff;
+		width: 60px;height: 60px;
+		border-radius: 100%;
+		display: flex; align-items: center;justify-content: center;
+		a { display: flex; align-items: center;justify-content: center; }
+		svg { width: 60%;height: 60%;  }	
+
+	}
+}
+
+
+@import "img-text";
 @import "modal";

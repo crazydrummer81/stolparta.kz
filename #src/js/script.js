@@ -95,6 +95,7 @@ const modalCallbackForm = {
 							</table>
 							<div class="gift"></div>
 							<div class="benefit"></div>
+							<div class="discount"></div>
 							<div class="price_total">Итого: <span class="price_value">0</span> ₸
 								<input type="hidden" name="cost_total" value=0>
 							</div>
@@ -138,10 +139,12 @@ const modalCallbackForm = {
 		console.log('modal show');
 		const modal = document.querySelector('.modal');
 		modal.classList.add('active');
+		document.body.classList.add('blocked');
 	},
 	hide: function() {
 		const modal = document.querySelector('.modal');
 		modal.classList.remove('active');
+		document.body.classList.remove('blocked');
 	},
 	submitted: function() {
 		const modalContent = document.querySelector('.modal .modal__content ');
@@ -237,13 +240,15 @@ const modalCallbackForm = {
 
 document.addEventListener('DOMContentLoaded', () => {
 	modalCallbackForm.init();
-	const btn = document.querySelector('.btn'),
+	const btns = document.querySelectorAll('.btn'),
 		modal = document.querySelector('.modal'),
 		table = modal.querySelector('table'),
 		btnClose = modal.querySelector('.modal__button-close'),
 		shippingCheckbox = modal.querySelector('input[name=need_shipping]');
-	btn.addEventListener('click', (event) => {
-		modalCallbackForm.show();
+	btns.forEach(btn => {
+		btn.addEventListener('click', (event) => {
+			modalCallbackForm.show();
+		});
 	});
 	btnClose.addEventListener('click', (event) => {
 		modalCallbackForm.hide();
@@ -260,6 +265,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	shippingCheckbox.addEventListener('change', (event) => {
 		modalCallbackForm.calculate();
+	});
+
+	const waLinks = document.querySelectorAll('a');
+	waLinks.forEach(item => {
+		console.log(item.attributes);
+		if (item.attributes.href.value == '#link:whatsapp') { 
+			item.addEventListener('click', (e) => {
+				e.preventDefault();
+				window.open(
+					'https://api.whatsapp.com/send/?phone=77017112621&text=Здравствуйте!%0A',
+					'_blank'
+				);
+			});
+		}
+		if (item.attributes.href.value == '#link:phone') { 
+			item.addEventListener('click', (e) => {
+				e.preventDefault();
+				window.open('tel:+77017280059');
+			});
+		}
 	});
 
 });
