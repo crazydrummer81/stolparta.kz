@@ -33,7 +33,7 @@ $message =
 	"Итого: ".$data['cost_total']." тг.\n";
 
 sendmail("stol-parta.kz - Новая заявка", $message,$EMAIL,$FROM,$REPLY);
-$RESULT['telegram'] = message_to_telegram("stol-parta.kz - Новая заявка\n\n".$message);
+$RESULT['telegram'] = message_to_telegram("stolparta.kz - Новая заявка\n\n".$message);
 echo json_encode($RESULT);
 // file_put_contents('log-'.$date.'.log', json_decode($RESULT));
 
