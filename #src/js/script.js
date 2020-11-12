@@ -19,8 +19,8 @@ testWebP(function (support) {
 });
 
 const prices = {
-	table: 23000,
-	chair: 17000,
+	table: 17400,
+	chair: 13600,
 	lamp: 5000,
 	shipping: 1000
 }

@@ -181,6 +181,21 @@ body.blocked { overflow: hidden; }
 			display: contents;
 		}
 	}
+	.black-friday {
+		display: flex; align-items: center;justify-content: center;
+		background: rgba(0,0,0,0.65);
+		color: #fff;
+		font-size: 2.5rem;
+		padding: 15px;
+		border-radius: 5px;
+		font-weight: bold;
+		margin-bottom: 1rem;
+		&__discount {
+			color: green;
+			font-size: 1.2em;
+			margin-left: .25em;
+		}
+	}
 	
 }
 .container { 
