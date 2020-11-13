@@ -149,6 +149,9 @@ body.blocked { overflow: hidden; }
 			margin-bottom: 30px;
 			font-weight: bold;
 			line-height: 1.3em;
+			@media (max-width: 768px) {
+				font-size: 2.5rem;
+			}
 		}
 		&__subheading {
 			font-family: var(--main-font-family);
@@ -167,6 +170,9 @@ body.blocked { overflow: hidden; }
 			align-items: center;
 			justify-content: center;
 			margin-bottom: 30px;
+			@media (max-width: 768px) {
+				font-size: 1.3rem;
+			}
 			&::before {
 				content: "";
 				display: block;
