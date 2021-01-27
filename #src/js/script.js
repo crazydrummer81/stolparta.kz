@@ -153,11 +153,21 @@ const modalCallbackForm = {
 			}
 		};
 	},
-	show: function() {
+	show: function(dataset) {
 		console.log('modal show');
-		const modal = document.querySelector('.modal');
+		const modal = document.querySelector('.modal'),
+		      tables = modal.querySelector('input[name="quantity_table"]'),
+		      chairs = modal.querySelector('input[name="quantity_chair"]'),
+				lamps = modal.querySelector('input[name="quantity_lamp"]');
+
+		tables.value = dataset.tables;
+		chairs.value = dataset.chairs;
+		lamps.value = dataset.lamps;
+				
 		modal.classList.add('active');
 		document.body.classList.add('blocked');
+
+		this.calculate();
 	},
 	hide: function() {
 		const modal = document.querySelector('.modal');
@@ -265,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		shippingCheckbox = modal.querySelector('input[name=need_shipping]');
 	btns.forEach(btn => {
 		btn.addEventListener('click', (event) => {
-			modalCallbackForm.show();
+			modalCallbackForm.show(event.target.dataset);
 		});
 	});
 	btnClose.addEventListener('click', (event) => {
