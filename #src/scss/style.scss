@@ -118,7 +118,7 @@ body.blocked { overflow: hidden; }
 	background-image: url(../img/parta-almaty-001.jpg);
 	background-position: center;
 	background-size: cover;
-	height: 100vh;
+	min-height: 100vh;
 	position: relative;
 	z-index: 100;
 	display: flex;
@@ -185,8 +185,8 @@ body.blocked { overflow: hidden; }
 		display: flex; align-items: center;justify-content: center;
 		background: rgba(0,0,0,0.65);
 		color: #fff;
-		font-size: 2.5rem;
-		padding: 15px;
+		font-size: 2rem;
+		padding: 15px 35px;
 		border-radius: 5px;
 		font-weight: bold;
 		margin-bottom: 1rem;
@@ -194,6 +194,9 @@ body.blocked { overflow: hidden; }
 			color: green;
 			font-size: 1.2em;
 			margin-left: .25em;
+		}
+		@media (max-width: 768px) {
+			flex-direction: column;
 		}
 	}
 	
