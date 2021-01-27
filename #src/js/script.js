@@ -95,7 +95,7 @@ const modalCallbackForm = {
 							</table>
 							<div class="gift"></div>
 							<div class="benefit"></div>
-							<div class="discount"></div>
+							<div class="discount" style="display:none"></div>
 							<div class="price_total">Итого: <span class="price_value">0</span> ₸
 								<input type="hidden" name="cost_total" value=0>
 							</div>
