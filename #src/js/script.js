@@ -160,9 +160,9 @@ const modalCallbackForm = {
 		      chairs = modal.querySelector('input[name="quantity_chair"]'),
 				lamps = modal.querySelector('input[name="quantity_lamp"]');
 
-		tables.value = dataset.tables;
-		chairs.value = dataset.chairs;
-		lamps.value = dataset.lamps;
+		tables.value = +dataset.tables || 0;
+		chairs.value = +dataset.chairs || 0;
+		lamps.value = +dataset.lamps || 0;
 				
 		modal.classList.add('active');
 		document.body.classList.add('blocked');
